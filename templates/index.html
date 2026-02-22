@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Prediction App</h1>
+        <form method="POST">
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if current_data %}
+            <h2>Current Weather in {{ city }}</h2>
+            <p>Temperature: {{ current_data['main']['temp'] }}°C</p>
+            <p>Weather: {{ current_data['weather'][0]['description'] }}</p>
+            <p>Wind Speed: {{ current_data['wind']['speed'] }} m/s</p>
+            <p>Humidity: {{ current_data['main']['humidity'] }}%</p>
+        {% endif %}
+
+        {% if forecast_data %}
+            <h2>Future Weather Predictions for the Next 3 Days</h2>
+            {% for forecast in forecast_data %}
+                <div class="forecast">
+                    <p>Date: {{ forecast['date'] }}</p>
+                    <p>Time: {{ forecast['time'] }}</p>
+                    <p>Temperature: {{ forecast['temp'] }}°C</p>
+                    <p>Weather: {{ forecast['description'] }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>
