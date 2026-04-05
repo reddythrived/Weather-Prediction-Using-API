@@ -1,11 +1,19 @@
+import os
 from flask import Flask, render_template, request
 import requests
 from datetime import datetime
 from pytz import timezone
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+# This is crucial for security to ensure sensitive keys are not hardcoded in the source code
+load_dotenv()
 
 app = Flask(__name__)
 
-API_KEY = "Your api key"
+# Environment variables are used to securely store API keys. 
+# This prevents them from being exposed in public version control systems like GitHub.
+API_KEY = os.getenv("API_KEY")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -58,4 +66,5 @@ def index():
     return render_template("index.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Debug mode is turned off for production deployment as it can expose sensitive information
+    app.run(debug=False)
